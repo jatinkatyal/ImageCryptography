@@ -1,41 +1,30 @@
-import numpy, random
+import numpy,random
 
-def f(a0,x,constants):
-	pow = 1
-	res = a0
-	for a in constants:
-		res += a * (x ^ pow)
-		pow += 1
-	return res
-
-def genrateShares(image,n,k):
-	x = image.shape[1]
-	y = image.shape[0]
-	random.seed()
-
+def generateShares(secret,n,k):
 	constants = []
-	for i in range(k):
-		constants.append(random.randrange(0,1000))
-	print(len(constants))
-	shares=[]
-	for i in range(n):
-		share = numpy.empty((y,x))
-		for row in range(y):
-			for col in range(x):
-				share[row,col] = f(image[row,col],i,constants)
+	for i in range(k-1):
+		constants.append(random.randint(1,1000))
+	constants=[5,6]
+	shares = []
+	for x in range(n):
+		x=x+1
+		share = secret.copy()
+		for a in constants:
+			p = constants.index(a)+1
+			share += a*x**p
 		shares.append(share)
-		print('Share ',i,' created.')
 	return shares
+
 
 if __name__ == '__main__':
 	import cv2
-
-	img = cv2.imread('lenna.png')
-	img = cv2.cvtColor(img,cv2.COLOR_RGB2GRAY)
-	n = 10#int(input('Number of shares: '))
-	k = 3#int(input('Threshold to unlock: '))
-	print('Generating shares...')
-	shares = genrateShares(img,n,k)
+	secret = cv2.imread('lenna.png')
+	secret = cv2.cvtColor(secret,cv2.COLOR_RGB2GRAY)
+	cv2.imshow('orig',secret)
+	n = 10
+	k = 3
+	shares = generateShares(secret,n,k)
 	for i in range(n):
-		numpy.savetxt('Shares/'+str(i),shares[i],delimiter=',',fmt='%10.5f')
-		print('Saved ',i)
+		numpy.savetxt('Shares/'+str(i+1)+'.csv',shares[i],delimiter=',',fmt='%10.5f')
+		cv2.imshow('test',shares[i])
+		cv2.waitKey(3000)
