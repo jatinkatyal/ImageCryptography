@@ -26,5 +26,6 @@ if __name__ == '__main__':
 	shares = generateShares(secret,n,k)
 	for i in range(n):
 		numpy.savetxt('Shares/'+str(i+1)+'.csv',shares[i],delimiter=',',fmt='%10.5f')
+		cv2.imsave('Shares/'+str(i+1)+'.csv',shares[i])
 		cv2.imshow('test',shares[i])
 		cv2.waitKey(3000)
