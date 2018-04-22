@@ -20,8 +20,8 @@ def decrypt(x,f,ids):
 
 if __name__ == '__main__':
 	import os,random,cv2,time
-	k = 8
-	N=10
+	k = 15
+	N=20
 	s = os.listdir('Shares')
 	shares = []
 	ids=[]

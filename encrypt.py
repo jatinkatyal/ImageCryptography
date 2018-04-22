@@ -3,8 +3,9 @@ import numpy,random
 def generateShares(secret,n,k):
 	constants = []
 	for i in range(k-1):
-		constants.append(random.randint(1,1000))
-	constants=[5,6]
+		constants.append(random.randint(100,5000))
+	constants=[500,500]
+	print(constants)
 	shares = []
 	for x in range(n):
 		x=x+1
@@ -18,14 +19,15 @@ def generateShares(secret,n,k):
 
 if __name__ == '__main__':
 	import cv2
-	secret = cv2.imread('lenna.png')
-	secret = cv2.cvtColor(secret,cv2.COLOR_RGB2GRAY)
+	secret = cv2.imread('Resources/lenna.png')
+	#secret = cv2.cvtColor(secret,cv2.COLOR_RGB2GRAY)
 	cv2.imshow('orig',secret)
-	n = 10
-	k = 3
-	shares = generateShares(secret,n,k)
-	for i in range(n):
-		numpy.savetxt('Shares/'+str(i+1)+'.csv',shares[i],delimiter=',',fmt='%10.5f')
-		cv2.imsave('Shares/'+str(i+1)+'.csv',shares[i])
+	cv2.waitKey(50)
+	N = 20
+	k = 15
+	shares = generateShares(secret,N,k)
+	for i in range(N):
+		cv2.imwrite('Shares/'+str(i+1)+'.png',shares[i])
+		#numpy.savetxt('Shares/'+str(i+1)+'.csv',shares[i],delimiter=',',fmt='%i')
 		cv2.imshow('test',shares[i])
-		cv2.waitKey(3000)
+		cv2.waitKey(250)
